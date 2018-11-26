@@ -1,0 +1,67 @@
+#include<iostream>
+
+using namespace std;
+
+
+
+void enterCoefficients(int *arr,int size) {
+
+	cout << "Enter coefficients: ";
+
+	for (int i = 0; i < size; ++i) {
+
+		cin >> arr[i];
+
+	}
+	cout << endl << endl;
+}
+
+int sumOfOne(int *arr,int size,int x) {
+	int sum = 0;
+
+	for (int j = size - 1; j >= 0; --j) {
+
+		sum += arr[j] * pow(x, j);
+		
+	}
+	return sum;
+}
+
+int main() {
+
+	int size1;
+	int size2;
+	int x;
+	int finalSum;
+
+
+	cout << "Enter quantity 1: ";
+	cin >> size1;
+	cout << "Enter quantity 2: ";
+	cin >> size2;
+
+	if (size1 > 0 && size2 > 0) {
+		int *arr1 = new int[size1];
+		int *arr2 = new int[size2];
+
+
+
+		enterCoefficients(arr1, size1);
+		enterCoefficients(arr2, size2);
+
+		cout << "Enter x: ";
+		cin >> x;
+
+
+		finalSum = sumOfOne(arr1, size1, x) + sumOfOne(arr2, size2, x);
+
+		cout << " Sum is: " << finalSum << endl;
+	}
+	else {
+		cout << "Invalid data\n";
+	}
+	
+	system("pause");
+	return 0;
+
+}
