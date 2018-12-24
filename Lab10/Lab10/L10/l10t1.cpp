@@ -64,9 +64,7 @@ public:
 
 	}
 
-	Rational add(Rational a, Rational b);
-	Rational mult(Rational a, Rational b);
-	Rational div(Rational a, Rational b);
+	
 	
 
 	Rational operator=(Rational c) {
@@ -77,24 +75,24 @@ public:
 		return reduce(numer, den);
 	}
 
-	bool greater(Rational a,Rational b) {
-		if (a.den != b.den) {
-			a.numer *= b.den;
-			b.numer *= a.den;
+	bool greater(Rational b) {
+		if (this->den != b.den) {
+			this->numer *= b.den;
+			b.numer *= this->den;
 		}
-		return (a.numer > b.numer) ? true : false;
+		return (this->numer > b.numer) ? true : false;
 	}
 
-	bool less(Rational a, Rational b) {
-		if (a.den != b.den) {
-			a.numer *= b.den;
-			b.numer *= a.den;
+	bool less( Rational b) {
+		if (this->den != b.den) {
+			this->numer *= b.den;
+			b.numer *= this->den;
 		}
-		return (a.numer < b.numer) ? true : false;
+		return (this->numer < b.numer) ? true : false;
 	}
 	
-	bool equal(Rational a, Rational b) {
-		if (a.numer == b.numer && a.den == b.den) {
+	bool equal( Rational b) {
+		if (this->numer == b.numer && this->den == b.den) {
 			return true;
 		}
 		else {
@@ -130,6 +128,8 @@ Rational div(Rational a, Rational b) {
 
 	return c.reduce(numer2, den2);
 }
+
+
 
 
 
@@ -211,27 +211,37 @@ bool Queue<T>::isEmpty() {
 int main() {
 
 
-	Rational r1(3, 5);
-	Rational r2(2, 10);
-	Rational r3;
-	//r3 = r1.add(r1, r2);
-	
-	r3 = add(r1, r2);
-	r3.print();
-	cout << endl;
+	Queue<int>xq;
+	Queue<int>yq;
 
-	Queue<Rational>qq;
-	Rational r4;
-	qq.push(r1);
-	qq.push(r2);
-	qq.push(r3);
-	r4 = qq.topElement();
-	r4.print();
+	xq.push(2);
+	xq.push(5);
+	xq.push(11);
+	xq.push(1);
+
+	yq.push(3);
+	yq.push(8);
+	yq.push(0);
+	yq.push(7);
+
+	int counter = 0;
+
+	while (!xq.isEmpty() && !yq.isEmpty()) {
+		counter++;
+		int x = xq.pop();
+		int y = yq.pop();
+		if (x < y) {
+			xq.push(x + y);
+
+		}
+		else {
+			yq.push(x - y);
+		}
+	}
+
+	cout << counter << "\n";
 
 	system("pause");
 	return 0;
-
-
-
 
 }
