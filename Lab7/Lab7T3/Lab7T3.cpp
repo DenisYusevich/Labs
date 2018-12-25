@@ -1,52 +1,40 @@
-#include<iostream>
-#include<fstream>
-#include<cstdio>
+#include <cstdlib>
+#include <string>
+#include <string.h>
 
 using namespace std;
 
-int main() {
+char* getString(){
+    char* s;
+    string buf;
+    getline(cin, buf);
+    s = &buf[0];
+    return s;
+}
 
+const int MAX_LEN = 256 * 256 + 1;
 
-	ifstream input("input.txt");
+int main(){
+    char* s;
+    char* word;
+    s = getString();
+    int hash[MAX_LEN] = {0};
+    char* pairs[MAX_LEN];
+    word = strtok (s, " .,;:!-");
+    while (word){
+        if (strlen(word) == 2){
+            int curHash = (word[0]*31 + word[1])*31 %MAX_LEN;
+            hash[curHash]++;
+            pairs[curHash] = word;
+        }
+        word = strtok (NULL, " .,;:!-");
+    }
+    for(int i=0; i<MAX_LEN; ++i){
+        if(hash[i] != 0){
+            cout<<pairs[i]<<" "<<hash[i];
+        }
+    }
 
-	char ch;
-	int counter = 0;
-	while (input.get(ch))
-	{
-
-		counter++;
-	}
-	char* arr = new char[counter];
-
-	
-	input.close();
-
-	input.open("input.txt");
-
-	for (int i = 0; i < counter; ++i) {
-		input.get(ch);
-		arr[i] = ch;
-	}
-
-	for (int i = 0; i < counter; ++i) {
-		cout << arr[i];
-	}
-	cout << endl;
-
-	int twoLetterCount = 0;
-	for (int i = 1; i < counter; ++i) {
-		cout << arr[i];
-		if ((isdigit(arr[i]) > 0) && (isdigit(arr[i - 1]) > 0) ){
-
-			cout << "shit\n";
-			twoLetterCount++;
-			
-		}
-	}
-	cout << twoLetterCount << endl;
-	input.close();
-	system("pause");
-
-	return 0;
-
+    system("pause");
+    return 0;
 }
