@@ -6,226 +6,184 @@ using namespace std;
 
 
 
-////void addColsInMatrix(int **A, const int n, const int m)
-//{
-//	const int M = m + m / 2;
-//
-//	for (int i = 0; i < n; i++)
-//	{
-//		for (int j = 2; j < M; j += 3)
-//		{
-//			for (int k = M; k > j; k--) A[i][k] = A[i][k - 1];
-//			A[i][j] = 0;
-//		}
-//	}
-//
-//}
-void deleteCol() {
+#include <iostream>
+#include <cstdlib>
 
+using namespace std;
 
-
-
+void printArray(int**& a, int n, int m){
+    for (int i = 0; i < n; i++){
+        for (int j = 0; j < m; j++){
+            cout << a[i][j] << ' ';
+        }
+        cout << '\n';
+    }
 }
 
+void addLine(int**& a, int& n, int m, int k, int*ins){
+    int **b = new int*[n+1];
+    for (int i = 0; i < n+1; i++)
+        b[i] = new int[m];
 
-void deleteRow(int **arr, int row, int col, int key) {
+    for (int i = 0; i < n+1; i++){
+        for (int j = 0; j < m; j++){
+            if (i < k){
+                b[i][j] = a[i][j];
+            }else if (i == k){
+                b[i][j] = ins[j];
+            }
+            else{
+                b[i][j] = a[i-1][j];
+            }
+        }
+    }
 
-	int** arr2 = new int*[row-1];//создаем динамический двумерный массив
+    for (int i = 0; i < n; i++)
+        delete[] a[i];
+    delete[] a;
 
-	for (int i = 0; i < row-1; i++) {
-
-		arr2[i] = new int[col];
-
-	}
-
-	for (int i = 0; i < row-1; i++) {
-		for (int j = 0; j < col; j++) {
-			if (i >= key - 1) {
-				arr2[i][j] = arr[i + 1][j];
-			}
-			else {
-				arr2[i][j] = arr[i][j];
-			}
-		}
-	}
-
-	for (int i = 0; i < row-1; i++) {
-		for (int j = 0; j < col; j++) {
-			cout << setw(10) << arr2[i][j];
-		}cout << endl;
-	}
-
+    a = b;
+    n = n+1;
 }
 
+void addColumn(int**& a, int n, int& m, int k, int*ins){
+    int **b = new int*[n];
+    for (int i = 0; i < n; i++){
+        b[i] = new int[m+1];
+    }
 
-void insertRow(int **arr, int row, int col, int key) {
-	
-	int	j = key - 1;
+    for (int i = 0; i < n; i++){
+        for (int j = 0; j < m+1; j++){
+            if (j < k){
+                b[i][j] = a[i][j];
+            }else if (j == k){
+                b[i][j] = ins[i];
+            }else{
+                b[i][j] = a[i][j-1];
+            }
+        }
+    }
 
-	for (int i = 0; i < col; ++i) {
-		for (int k = row ; k >= j + 1; --k) {
-			arr[k][i] = arr[k-1][i];
+    for (int i = 0; i < n; i++){
+        delete[] a[i];
+    }
+    delete[] a;
 
-		}
-	}
-
-	cout << "wtf\n";
-
-	for (int i = 0; i < col; ++i) {
-		arr[j][i] = 0;
-	}
-
-	for (int i = 0; i < row + 1; i++) {
-		for (int j = 0; j < col ; j++) {
-			cout << setw(10) << arr[i][j];
-		}cout << endl;
-	}
-
-
+    a = b;
+    m = m+1;
 }
 
-int insertCol(int **arr, int row, int col,int key) {
+void deleteLine(int**& a, int& n, int m, int k){
+    int **b = new int*[n-1];
+    for (int i = 0; i < n-1; i++){
+        b[i] = new int[m];
+    }
 
-	int	j = key - 1;
-	
-	for (int i = 0; i < row; ++i) {
-		for (int k = col ; k >= j + 1; --k) {
-			arr[i][k] = arr[i][k - 1];
-			
-		}
-	}
+    for (int i = 0; i < n-1; i++){
+        for (int j = 0; j < m; j++){
+            if (i < k){
+                b[i][j] = a[i][j];
+            }else{
+                b[i][j] = a[i+1][j];
+            }
+        }
+    }
 
-	
-	for (int i = 0; i < row; ++i) {
-		arr[i][j] = 0;
-	}
+    for (int i = 0; i < n; i++){
+        delete[] a[i];
+    }
+    delete[] a;
 
-	for (int i = 0; i < row; i++) {
-		for (int j = 0; j < col + 1; j++) {
-			cout << setw(10) << arr[i][j];
-		}cout << endl;
-	}
-	return 0;
+    a = b;
+    n = n-1;
 }
 
+void deleteColumn(int**& a, int n, int &m, int k){
+    int **b = new int*[n];
+    for (int i = 0; i < n; i++){
+        b[i] = new int[m-1];
+    }
 
-//
-//
-//int insertCol(int **arr, int row, int col, int key) {
-//
-//	int	j = key - 1;
-//
-//	for (int i = 0; i < row; ++i) {
-//		for (int k = col; k >= j + 1; --k) {
-//			arr[i][k] = arr[i][k - 1];
-//
-//		}
-//	}
-//
-//
-//	for (int i = 0; i < row; ++i) {
-//		arr[i][j] = 0;
-//	}
-//
-//	for (int i = 0; i < row; i++) {
-//		for (int j = 0; j < col + 1; j++) {
-//			cout << setw(10) << arr[i][j];
-//		}cout << endl;
-//	}
-//	return 0;
-//}
+    for (int i = 0; i < n; i++){
+        for (int j = 0; j < m-1; j++){
+            if (j < k){
+                b[i][j] = a[i][j];
+            }else{
+                b[i][j] = a[i][j+1];
+            }
+        }
+    }
 
-//void output(int**(*f)(int**, int, int, int), int **arr, int row, int col,int key) {
-//
-//	*f(arr, row, col,key);
-//
-//	for (int i = 0; i < row + 1 && **(f(arr, row, col, key) + i)>0; i++) {
-//		for (int j = 0; j < col + 1 && **(f(arr, row, col, key) + i) > 0; j++) {
-//			cout << setw(10) << **((f(arr, row, col, key) + j+i)) << " ";
-//		}cout << endl;
-//	}
-//
-//
-//}
+    for (int i = 0; i < n; i++){
+        delete[] a[i];
+    }
+    delete[] a;
 
-
-int menu() {
-
-	srand(time(0));
-
-	int row;
-	int col;
-	cout << "Enter size of row of array: ";
-	cin >> row;
-	cout << "Enter size of column of array: ";
-	cin >> col;
-
-
-	int** arr = new int*[row];//создаем динамический двумерный массив
-
-	for (int i = 0; i <= row; i++) {
-
-		arr[i] = new int[col];
-
-	}
-
-	
-
-	for (int i = 0; i < row; i++)
-		for (int j = 0; j < col; j++)
-			arr[i][j] = (rand() % 10 + 1) / int((rand() % 10 + 1));
-
-	
-
-
-	for (int i = 0; i < row; i++) {
-		for (int j = 0; j < col; j++) {+
-			cout << setw(10) << arr[i][j];
-		}cout << endl;
-	}
-
-	cout << endl << endl << endl;
-	
-	
-	
-	cout << "Choose one of this options: :" << endl << "1)Insert column\n" << "2)Insert row\n" << "3)Delete column\n" << "Delete row\n";
-	int choice;
-	//cin >> choice;
-
-	cout << "Enter index of row/column: ";
-	int key;
-	cin >> key;
-
-	//switch (choice) {
-
-	//	/*case 1:
-
-	//		insertCol(arr, row, col, key);
-	//		break;
-	//	}*/
-
-		
-	deleteRow(arr, row, col, key);
-	/*insertRow(arr, row, col, key);
-	for (int i = 0; i < row + 1; i++) {
-		for (int j = 0; j < col; j++) {
-			cout << setw(10) << arr[i][j];
-		}cout << endl;
-	}*/
-	//insertRow(arr, row, col, key);
-	return 0;
-		
-	
+    a = b;
+    m = m-1;
 }
 
+int main(){
+    cout << "Input array dimensions: ";
+    int n, m;
+    cin >> n >> m;
+    int** a = new int*[n];
+    for (int i = 0; i < n; i++){
+        a[i] = new int[m];
+    }
 
-int main() {
+    cout << "Input array elements:\n\n";
+    for (int i = 0; i < n; i++){
+        for (int j = 0; j < m; j++){
+            cin >> a[i][j];
+        }
+    }
 
+    char c;
 
-	menu();
+    bool isWorking = true;
+    while(isWorking){\
+        cout << "\nSelect operation:\n" << "\t1. Insert line\n" << "\t2. Insert column\n"
+                                        << "\t3. Delete line\n" << "\t4. Delete column\n"
+                                        << "\t5. Exit.\n" << "Your's choice(1-5): ";
+        cin >> c;
+        int k, p;
+        int* ins;
+        if(c == '5'){
+            cout << "End of work. Have a nice day! ";
+            isWorking = false;
+            break;
+        }
 
-	system("pause");
-	return 0;
+        cout << "\nLine/Column: ";
+        cin >> k;
+        k--;
 
+        if (c == '1' || c == '2'){
+            p = (c=='1') ? m:n;
+            ins = new int[p];
+            cout << "Input line/column (" << p << " numbers): ";
+            for (int i = 0; i < p; i++){
+                cin >> ins[i];
+            }
+        }
 
+        switch (c){
+            case '1': addLine(a, n, m, k, ins); break;
+            case '2': addColumn(a, n, m, k, ins); break;
+            case '3': deleteLine(a, n, m, k); break;
+            case '4': deleteColumn(a, n, m, k); break;
+            case '5': isWorking = false; break;
+        }
+
+        cout << "\nResulting array:\n\n";
+        printArray(a, n, m);
+    }
+
+    for (int i = 0; i < n; i++)
+        delete[] a[i];
+    delete[] a;
+
+    system("pause");
+    return 0;
 }
