@@ -1,13 +1,72 @@
 #include<iostream>
-#include<stack>
+#include<string>
+#include <cstdlib>
 
 
 using namespace std;
 
 
-char max(char a, char b) {
+template<class T>
+class Node {
 
-	int A;
+public:
+
+	T value;
+	Node* prev;
+
+};
+
+
+
+template<class T>
+class myStack {
+
+private:
+	Node<T>* top;
+
+
+public:
+	void push(T c) {
+
+		Node<T> *pv = new Node<T>;
+		pv->value = c;
+		pv->prev = top;
+		top = pv;
+	}
+
+
+
+	T pop() {
+
+		if (isEmpty())
+		{
+			return 0;
+		}
+		else {
+			T temp = top->value;
+			Node<T> *pv = top;
+			top = top->prev;
+			delete pv;
+			return temp;
+		}
+	}
+
+
+
+
+
+	bool isEmpty()
+	{
+		return top ? false : true;
+	}
+
+
+};
+
+
+char max(int a, int b) {
+
+	/*int A;
 	int B;
 
 	char arrC[10] = { '0','1','2','3','4','5','6','7','8','9' };
@@ -29,15 +88,17 @@ char max(char a, char b) {
 	}
 	if (A < B) {
 		return b;
-	}
+	}*/
+
+	return a > b ? a : b;
 
 
 }
 
 char min(char a, char b) {
 
-	int A;
-	int B;
+	/*int A = 0;
+	int B = 0;
 
 	char arrC[10] = { '0','1','2','3','4','5','6','7','8','9' };
 	int arrI[10] = { 0,1,2,3,4,5,6,7,8,9 };
@@ -54,98 +115,77 @@ char min(char a, char b) {
 	if (A < B) {
 		return a;
 	}
-	if (A > B) {
+	else if (A > B) {
 		return b;
 	}
-
-
-}
-
-bool isDig(char x) {
-
-	bool flag = false;
-
-	char arr[10] = { '0','1','2','3','4','5','6','7','8','9' };
-	for (int i = 0; i < 10; ++i) {
-		if (x == arr[i]) {
-			flag = true;
-		}
-	}
-
-	if (flag == true) {
-		return true;
-	}
 	else {
-		return false;
-	}
+		return 'e';
+	}*/
+
+	return a < b ? a : b;
 
 }
+
+//bool isDig(char x) {
+//
+//	bool flag = false;
+//
+//	char arr[10] = { '0','1','2','3','4','5','6','7','8','9' };
+//	for (int i = 0; i < 10; ++i) {
+//		if (x == arr[i]) {
+//			flag = true;
+//		}
+//	}
+//
+//	if (flag == true) {
+//		return true;
+//	}
+//	else {
+//		return false;
+//	}
+//
+//}
 
 
 int main() {
 
 
-	stack<char>Operand;
-	stack<char>Function;
+	string s;
+	cin >> s;
+	myStack<int> num;
+	myStack<char> op;
 
-	char c[] = "8 или min(4, min(3, 5)) или  min(min(3, 5), min(2, min(3, 4)))";
+	int i = 0;
 
-	//char c[] = "max(3,6)";
-
-	int counter = 0;
-	char a;
-	char b;
-
-	for (int i = 0; i < strlen(c)+1; ++i) {
-
-		if (isDig(c[i]) == true) {
-			Operand.push(c[i]);
-		}
-		if (c[i] == 'x' || c[i] == 'n') {
-			Function.push(c[i]);
-
-		}
-			
-		if (c[i] == ')') {
-
+	while (s[i]) {
 		
-
-			if (Function.top() == 'x') {
-
-				a = Operand.top();
-				cout << a;
-				Operand.pop();
-				b = Operand.top();
-				cout << b;
-				Operand.pop();
-				Operand.push(max(a, b));
-				cout << Operand.top();
-				Function.pop();
-
-			}
-
-			if (Function.top() == 'n') {
-
-				a = Operand.top();
-				Operand.pop();
-				b = Operand.top();
-				Operand.pop();
-				Operand.push(min(a, b));
-				//cout << Operand.top();
-				Function.pop();
-
-			}
-				
+		if (s[i] == 'a' || s[i] == 'i') {
+			op.push(s[i]);
+			i += 2;
 		}
-		
+		else if (isdigit(s[i]) || s[i] == '-') {
+			num.push(s[i] - '0');
+			while (isdigit(s[i]) || s[i] == '-') i++;
+		}
+		else if (s[i] == ')') {
+			int operand1, operand2, operation;
+			operation = op.pop();
+			operand2 = num.pop();
+			operand1 = num.pop();
+			switch (operation) {
+			case 'a':
+				num.push(max(operand1, operand2));
+				break;
+			case 'i':
+				num.push(min(operand1, operand2));
+				break;
+			}
+			i++;
+		}
+		else
+			if (s[i] == '(' || s[i] == ' ' || s[i] == ',' || s[i] == 'm') i++;
 	}
-
-	cout << Operand.top()<<endl;
-	Operand.pop();
-	cout << Operand.top() << endl;
-	Operand.pop();
-	cout << Operand.top();
-
+	cout << num.pop() << "\n";
 	system("pause");
 	return 0;
 }
