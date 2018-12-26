@@ -1,135 +1,97 @@
 #include<iostream>
-#include<stack>
+#include<string>
 
 using namespace std;
 
 
+template<class T>
 class Node {
 
 public:
-	char valueChar;
-	int value;
+	
+	T value;
 	Node* prev;
 
 };
 
 
-//class NodeChar {
-//
-//public:
-//	char valueChar;
-//	NodeChar* prevChar;
-//
-//};
 
+template<class T>
 class myStack {
 
 private:
-	Node* top;
-	//NodeChar* topChar;
+	 Node<T>* top;
+	 
 
 public:
-	void push(int c) {
+	void push(T c) {
 	
-		Node *pv = new Node;
+		Node<T> *pv = new Node<T>;
 		pv->value = c;
 		pv->prev = top;
 		top = pv;
 	}
 
-	void pushChar( char c) {
+	
 
-		Node *pv = new Node;
-		pv->valueChar = c;
-		pv->prev = top;
-		top = pv;
-	}
-
-	int pop() {
-
-		if (isEmpty())
-		{
-			return -1;
-		}
-		int temp = top->value;
-		Node *pv = top;
-		top = top->prev;
-		delete pv;
-		return temp;
-
-	}
-
-	char popChar() {
+	T pop() {
 
 		if (isEmpty())
 		{
 			return 0;
 		}
-		char temp = top->valueChar;
-		Node *pv = top;
-		top = top->prev;
-		delete pv;
-		return temp;
-
+		else {
+			T temp = top->value;
+			Node<T> *pv = top;
+			top = top->prev;
+			delete pv;
+			return temp;
+		}
 	}
+
+
+
+	
 
 	bool isEmpty()
 	{
 		return top ? false : true;
 	}
-	/*bool isEmptyChar() {
-		return topChar ?  false : true;
-	}*/
+	
 
 };
 
 
 int main() {
 
-
-	char c[] = "(арварв}(dsdk)[)[]";
-
-	stack<char> st;
-
-	//st.pushChar(c);
-
-	bool flag = true;
-	for (int i = 0; i < 22; ++i) {
-		if (c[i] == '(' || c[i] == '[' || c[i] == '{') {
-			st.push(c[i]);
-			cout << c[i] << " ";
+	string s;
+	cin >> s;
+	myStack<char> st;
+	bool isCorrect = true;
+	for (int i = 0; i < s.size(); ++i) {
+		if (s[i] == '(' || s[i] == '{' || s[i] == '[') {
+			st.push(s[i]);
+			continue;
 		}
-
-
-		if (c[i] == ')' || c[i] == ']' || c[i] == '}') {
-
-
-			if (st.empty()) {
-				flag = false;
+		if (s[i] == ')' || s[i] == '}' || s[i] == ']' && !st.isEmpty()) {
+			char cur = st.pop();
+			if (!((cur == '(' && s[i] == ')') || (cur == '{' && s[i] == '}') || (cur == '[' && s[i] == ']'))) {
+				isCorrect = false;
 				break;
 			}
-
-			else {
-				st.pop();
-			}
-			
-
-			
 		}
-
+	}
+	if (isCorrect && st.isEmpty()) {
+		cout << "Ok." << "\n";
+	}
+	else {
+		cout << "UnCorrect." << "\n";
 	}
 
-		if (flag == true) {
-			cout << "Alright";
-		}
-		else {
-			cout << "Smth is wrong\n";
-		}
-
-		system("pause");
-		return 0;
-
+	
+    system("pause");
+    return 0;
+}
 
 
 	
-}
