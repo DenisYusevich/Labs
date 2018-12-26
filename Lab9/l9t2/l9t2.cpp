@@ -66,29 +66,7 @@ public:
 
 char max(int a, int b) {
 
-	/*int A;
-	int B;
-
-	char arrC[10] = { '0','1','2','3','4','5','6','7','8','9' };
-	int arrI[10] = { 0,1,2,3,4,5,6,7,8,9 };
-
-	for (int i = 0; i < 10; ++i) {
-		if (a == arrC[i]) {
-			A = arrI[i];
-			cout << "A:" << A;
-		}
-		if (b == arrC[i]) {
-			B = arrI[i];
-			cout << "B:" << B;
-		}
-	}
-
-	if (A > B) {
-		return a;
-	}
-	if (A < B) {
-		return b;
-	}*/
+	
 
 	return a > b ? a : b;
 
@@ -97,54 +75,13 @@ char max(int a, int b) {
 
 char min(char a, char b) {
 
-	/*int A = 0;
-	int B = 0;
-
-	char arrC[10] = { '0','1','2','3','4','5','6','7','8','9' };
-	int arrI[10] = { 0,1,2,3,4,5,6,7,8,9 };
-
-	for (int i = 0; i < 10; ++i) {
-		if (a == arrC[i]) {
-			A = arrI[i];
-		}
-		if (b == arrC[i]) {
-			B = arrI[i];
-		}
-	}
-
-	if (A < B) {
-		return a;
-	}
-	else if (A > B) {
-		return b;
-	}
-	else {
-		return 'e';
-	}*/
+	
 
 	return a < b ? a : b;
 
 }
 
-//bool isDig(char x) {
-//
-//	bool flag = false;
-//
-//	char arr[10] = { '0','1','2','3','4','5','6','7','8','9' };
-//	for (int i = 0; i < 10; ++i) {
-//		if (x == arr[i]) {
-//			flag = true;
-//		}
-//	}
-//
-//	if (flag == true) {
-//		return true;
-//	}
-//	else {
-//		return false;
-//	}
-//
-//}
+
 
 
 int main() {
