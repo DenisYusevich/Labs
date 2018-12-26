@@ -1,128 +1,152 @@
-#include<iostream>
-#include<string>
+*/
+#include <iostream>
+#include <string>
 #include <cstdlib>
-
 
 using namespace std;
 
+template <class T>
+class Stack {
+    public:
+        Stack():top(0) {
+            cout << "In Stack constructor\n";
+        }
+        ~Stack() {
+            cout << "In Stack destructor\n";
+            while ( !isEmpty() ) {
+                pop();
+            }
+            isEmpty();
+        }
 
-template<class T>
-class Node {
+        void push (const T& object);
+        T pop();
+        T back();
+        const T& topElement();
+        bool isEmpty();
 
-public:
+    private:
+        struct StackNode {
+            T data;                     // data at this node
+            StackNode *next;            // next node in list
 
-	T value;
-	Node* prev;
+            // StackNode constructor initializes both fields
+            StackNode(const T& newData, StackNode *nextNode)
+                : data(newData), next(nextNode) {}
+        };
 
+        Stack(const Stack& lhs) {}
+        StackNode *top;                 // top of stack
 };
 
-
-
-template<class T>
-class myStack {
-
-private:
-	Node<T>* top;
-
-
-public:
-	void push(T c) {
-
-		Node<T> *pv = new Node<T>;
-		pv->value = c;
-		pv->prev = top;
-		top = pv;
-	}
-
-
-
-	T pop() {
-
-		if (isEmpty())
-		{
-			return 0;
-		}
-		else {
-			T temp = top->value;
-			Node<T> *pv = top;
-			top = top->prev;
-			delete pv;
-			return temp;
-		}
-	}
-
-
-
-
-
-	bool isEmpty()
-	{
-		return top ? false : true;
-	}
-
-
-};
-
-
-char max(int a, int b) {
-
-	
-
-	return a > b ? a : b;
-
-
+template <class T>
+void Stack<T>::push(const T& obj) {
+    cout << "In PUSH Operation\n";
+    top = new StackNode(obj, top);
 }
 
-char min(char a, char b) {
-
-	
-
-	return a < b ? a : b;
-
+template <class T>
+T Stack<T>::pop() {
+    cout << "In POP Operation\n";
+    if ( !isEmpty() ) {
+        StackNode *topNode = top;
+        top = top->next;
+        T data = topNode->data;
+        delete topNode;
+        return data;
+    }
+    //return 0;
 }
 
+template <class T>
+T Stack<T>::back() {
+    cout << "In POP Operation\n";
+    if ( !isEmpty() ) {
+        return top->data;
+    }
+    //return 0;
+}
 
+template <class T>
+const T& Stack<T>::topElement() {
+    cout << "Check Top Stack\n";
+    if ( !isEmpty() ) {
+        return top->data;
+    }
+}
 
+template <class T>
+bool Stack<T>::isEmpty() {
+    if (top == 0) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
 
-int main() {
+bool delim (char c) {
+	return c == ' ';
+}
 
+bool isOp (char c) {
+	return c=='+' || c=='-' || c=='*' || c=='/' || c=='%';
+}
 
-	string s;
-	cin >> s;
-	myStack<int> num;
-	myStack<char> op;
+int priority (char op) {
+	return
+		op == '+' || op == '-' ? 1 :
+		op == '*' || op == '/' || op == '%' ? 2 :
+		-1;
+}
 
-	int i = 0;
+void processOp (Stack<int> & st, char op) {
+	int r = st.pop();
+	int l = st.pop();
+	switch (op) {
+		case '+':  st.push(l + r);  break;
+		case '-':  st.push(l - r);  break;
+		case '*':  st.push(l * r);  break;
+		case '/':  st.push(l / r);  break;
+		case '%':  st.push(l % r);  break;
+	}
+}
 
-	while (s[i]) {
-		
-		if (s[i] == 'a' || s[i] == 'i') {
-			op.push(s[i]);
-			i += 2;
-		}
-		else if (isdigit(s[i]) || s[i] == '-') {
-			num.push(s[i] - '0');
-			while (isdigit(s[i]) || s[i] == '-') i++;
-		}
-		else if (s[i] == ')') {
-			int operand1, operand2, operation;
-			operation = op.pop();
-			operand2 = num.pop();
-			operand1 = num.pop();
-			switch (operation) {
-			case 'a':
-				num.push(max(operand1, operand2));
-				break;
-			case 'i':
-				num.push(min(operand1, operand2));
-				break;
+int calc (string & s) {
+    Stack<int> st;
+    Stack<char> op;
+	for (size_t i=0; i<s.length(); ++i)
+		if (!delim (s[i]))
+			if (s[i] == '(')
+				op.push('(');
+			else if (s[i] == ')') {
+				while (op.back() != '(')
+					processOp (st, op.pop());
+				op.pop();
 			}
-			i++;
-		}
-		else
-			if (s[i] == '(' || s[i] == ' ' || s[i] == ',' || s[i] == 'm') i++;
-	}
-	cout << num.pop() << "\n";
-	system("pause");
-	return 0;
+			else if (isOp (s[i])) {
+				char curop = s[i];
+				while (!op.isEmpty() && priority(op.back()) >= priority(s[i]))
+					processOp (st, op.pop());
+				op.push(curop);
+			}
+			else {
+				string operand;
+				while (i < s.length() && isalnum (s[i]))
+					operand += s[i++];
+				--i;
+				if (isdigit (operand[0]))
+					st.push(atoi (operand.c_str()));
+			}
+	while (!op.isEmpty())
+		processOp (st, op.pop());
+	return st.pop();
+}
+
+int main(){
+    string s;
+    cin >> s;
+    cout<<calc(s)<<"\n";
+    system("pause");
+    return 0;
 }
