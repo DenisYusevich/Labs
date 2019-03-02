@@ -17,6 +17,9 @@ public:
 			currCounter = counter;
 			//cout << counter;
 		};
+		~Node() {
+			delete[]next;
+		}
 
 		Node*next;
 		T value;
@@ -30,8 +33,6 @@ public:
 	private:
 		Node* ptr;
 	public:
-
-
 		Iterator() {};
 
 		Iterator(Node* top) {
@@ -65,7 +66,7 @@ public:
 		}
 	};
 	Arr() { head = nullptr; };
-
+	~Arr() {};
 	Iterator it;
 
 	void push_back(const T& value) {
@@ -137,6 +138,7 @@ public:
 			++it;
 		}
 	}
+
 
 private:
 	Node* head;
