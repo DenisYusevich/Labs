@@ -123,7 +123,7 @@ public:
 	void show() {
 		it = head;
 		while (true) {
-			cout << it.getValue();
+			cout << it.getValue() <<" ";
 			++it;
 			if (it == nullptr)
 				break;
