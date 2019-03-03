@@ -1,6 +1,6 @@
 #pragma once
-
 #include<iostream>
+
 using namespace std;
 
 template<class T>
@@ -19,6 +19,9 @@ public:
 		};
 		~Node() {
 			delete[]next;
+		}
+		void plusCounter() {
+			++currCounter;
 		}
 
 		Node*next;
@@ -47,7 +50,8 @@ public:
 			return ptr->currCounter;
 		}
 
-		operator T*() {
+
+		operator Node*() {
 			return ptr;
 		}
 
@@ -81,12 +85,7 @@ public:
 			it = head;
 
 		}
-		else if (head == tail) {
-			head->next = temp;
-			tail = temp;
-			tail->value = value;
-			tail->next = nullptr;
-		}
+		
 		else {
 			tail->next = temp;
 			tail = temp;
@@ -103,14 +102,21 @@ public:
 			tail->value = value;
 			head->next = nullptr;
 			tail->next = nullptr;
-			it = head;
 
 		}
 		else {
 			temp->next = head;
 			head = temp;
 			head->value = value;
-
+			head->currCounter = 0;
+			it = head;
+			while (true)
+			{
+				++it;
+				if (it == nullptr)break;
+				(*it).plusCounter();
+				
+			}
 		}
 	}
 
@@ -131,7 +137,7 @@ public:
 			if (it == nullptr)
 				break;
 			if (it.getCounter() == index) {
-				int temp;
+				T temp;
 				temp = it.getValue();
 				return temp;
 			}
