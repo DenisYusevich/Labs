@@ -6,13 +6,12 @@ using namespace std;
 template<class T>
 class Arr {
 
-
 public:
 
 	class Node {
 
 	public:
-		Node() {
+		Node() {			
 		};
 		~Node() {
 			delete[]next;
@@ -20,7 +19,7 @@ public:
 
 		Node*next;
 		T value;
-			};
+	};
 
 
 
@@ -37,6 +36,11 @@ public:
 		T getValue() {
 			return ptr->value;
 		}
+
+		int getCounter() {
+			return ptr->currCounter;
+		}
+
 
 		operator Node*() {
 			return ptr;
@@ -69,8 +73,6 @@ public:
 			tail->value = value;
 			head->next = nullptr;
 			tail->next = nullptr;
-			it = head;
-
 		}
 		
 		else {
@@ -95,8 +97,7 @@ public:
 			temp->next = head;
 			head = temp;
 			head->value = value;
-			it = head;
-			
+						
 		}
 	}
 
@@ -108,7 +109,6 @@ public:
 			if (it == nullptr)
 				break;
 		}
-		it = head;
 	}
 
 	T operator [](int index) {
