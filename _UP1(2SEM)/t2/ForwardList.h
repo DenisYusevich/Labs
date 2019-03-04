@@ -13,9 +13,9 @@ public:
 
 	public:
 		Node() {
-			counter++;
-			currCounter = counter;
-			//cout << counter;
+			//counter++;
+			//currCounter = counter;
+			////cout << counter;
 		};
 		~Node() {
 			delete[]next;
@@ -110,20 +110,14 @@ public:
 			head->value = value;
 			head->currCounter = 0;
 			it = head;
-			while (true)
-			{
-				++it;
-				if (it == nullptr)break;
-				(*it).plusCounter();
-				
-			}
+			
 		}
 	}
 
 	void show() {
 		it = head;
 		while (true) {
-			cout << it.getValue() <<" ";
+			cout << it.getValue() << " ";
 			++it;
 			if (it == nullptr)
 				break;
@@ -133,16 +127,32 @@ public:
 
 	T operator [](int index) {
 		it = head;
+		int c = 0;
 		while (true) {
 			if (it == nullptr)
 				break;
-			if (it.getCounter() == index) {
+			if (c == index) {
 				T temp;
 				temp = it.getValue();
 				return temp;
 			}
+			++c;
 			++it;
 		}
+	}
+
+	T pop_back(){
+	
+		it = head;
+		while (true) {
+			if ((*it).next == tail) {
+				(*it).next = nullptr;
+				break;
+			}
+			++it;
+		}
+		return (*it).value;
+	
 	}
 
 
@@ -151,5 +161,5 @@ private:
 	Node* tail;
 };
 
-template<class T>
-int Arr<T>::Node::counter = -1;
+//template<class T>
+//int Arr<T>::Node::counter = -1;
