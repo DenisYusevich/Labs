@@ -13,22 +13,14 @@ public:
 
 	public:
 		Node() {
-			//counter++;
-			//currCounter = counter;
-			////cout << counter;
 		};
 		~Node() {
 			delete[]next;
 		}
-		void plusCounter() {
-			++currCounter;
-		}
 
 		Node*next;
 		T value;
-		static int counter;
-		int currCounter;
-	};
+			};
 
 
 
@@ -45,11 +37,6 @@ public:
 		T getValue() {
 			return ptr->value;
 		}
-
-		int getCounter() {
-			return ptr->currCounter;
-		}
-
 
 		operator Node*() {
 			return ptr;
@@ -108,7 +95,6 @@ public:
 			temp->next = head;
 			head = temp;
 			head->value = value;
-			head->currCounter = 0;
 			it = head;
 			
 		}
@@ -160,6 +146,3 @@ private:
 	Node* head;
 	Node* tail;
 };
-
-//template<class T>
-//int Arr<T>::Node::counter = -1;
