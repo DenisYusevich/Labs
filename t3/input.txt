@@ -1,0 +1,4 @@
+Petia 1 3 7 9 8
+Vasya 2 8 9 6 3
+Deniska 1 8 9 7 8
+Serega 2 8 9 6 8
